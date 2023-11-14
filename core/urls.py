@@ -1,7 +1,7 @@
-from django.urls import path, include
-
+# urls.py
+from django.urls import path
+from .views import ImageAnalysisAPIView
 
 urlpatterns = [
-    # path("api/", include(router.urls)),
-    # path("api/dashboard/", CurrentDayRemindersMedicationsView.as_view()),
+    path('analyze-image/', ImageAnalysisAPIView.as_view(), name='analyze-image'),
 ]
