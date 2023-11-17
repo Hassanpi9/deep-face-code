@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import ImageSerializer
 import cv2
+import numpy as np
 from deepface import DeepFace
 import os
 
@@ -14,11 +15,10 @@ class ImageAnalysisAPIView(APIView):
 
         if serializer.is_valid():
             image = serializer.validated_data['image']
-
-            # Perform analysis using DeepFace
-            image_path = image.temporary_file_path()
-            image_data = cv2.imread(image_path)
-            result = DeepFace.analyze(image_data, actions=["emotion"])            
+            image_data = image.read()
+            image_array = np.asarray(bytearray(image_data), dtype=np.uint8)
+            image_cv2 = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+            result = DeepFace.analyze(image_cv2, actions=["emotion"])       
 
             return Response({'result': result}, status=status.HTTP_200_OK)
         else:
