@@ -18,7 +18,7 @@ class ImageAnalysisAPIView(APIView):
             image_data = image.read()
             image_array = np.asarray(bytearray(image_data), dtype=np.uint8)
             image_cv2 = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
-            result = DeepFace.analyze(image_cv2, actions=["emotion"])       
+            result = DeepFace.analyze(image_cv2,detector_backend="mtcnn", actions=["emotion"])       
 
             return Response({'result': result}, status=status.HTTP_200_OK)
         else:
